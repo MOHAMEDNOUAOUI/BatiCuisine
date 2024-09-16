@@ -45,6 +45,9 @@ public class Projets {
     public Etat_Projet getEtat_projet(){
         return etat_projet;
     }
+    public void setEtat_projet(Etat_Projet etat_projet){
+        this.etat_projet = etat_projet;
+    }
 
     public Clients getClient() {
         return client;

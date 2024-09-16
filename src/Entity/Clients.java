@@ -3,6 +3,8 @@ package Entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import Enum.*;
+
 public class Clients {
 
     private int id_Clients;
@@ -10,6 +12,7 @@ public class Clients {
     private String address;
     private String telephone;
     private boolean estProfessionel;
+    private ClientsStatut statut_user;
     private List<Projets> projetsList = new ArrayList<>();
 
     public Clients() {
@@ -44,6 +47,12 @@ public class Clients {
     }
     public void setEstProfessionel(boolean estProfessionel) {
         this.estProfessionel = estProfessionel;
+    }
+    public ClientsStatut getStatut_user() {
+        return statut_user;
+    }
+    public void setStatut_user(ClientsStatut statut_user) {
+        this.statut_user = statut_user;
     }
 
 

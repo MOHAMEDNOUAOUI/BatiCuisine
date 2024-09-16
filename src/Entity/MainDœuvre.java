@@ -10,19 +10,20 @@ public class MainDœuvre extends Composants {
         super();
     }
 
-    public Double getTauxTVA() {
-        return super.getTauxTVA();
-    }
     public Double getHeuresTravai() {
         return heuresTravai;
     }
     public Double getProductiviteOuvrier() {
         return productiviteOuvrier;
     }
+    public Double getTauxHoraire() {
+        return tauxHoraire;
+    }
+
     public void setTauxHoraire(Double tauxHoraire) {
         this.tauxHoraire = tauxHoraire;
     }
-    public void setHeuresTravai(Double heuresTravai) {
+    public void setHeuresTravail(Double heuresTravai) {
         this.heuresTravai = heuresTravai;
     }
     public void setProductiviteOuvrier(Double productiviteOuvrier) {
