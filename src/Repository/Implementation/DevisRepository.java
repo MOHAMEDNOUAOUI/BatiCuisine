@@ -152,11 +152,45 @@ public class DevisRepository implements DevisRepositoryInterface {
 
     @Override
     public void deleteById(int id) {
+        String sql = "DELETE FROM devis where id_devis = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            preparedStatement.setInt(1, id);
+            int affectedRows = preparedStatement.executeUpdate();
 
+            if (affectedRows > 0) {
+                System.out.println("Devis with ID " + id + " was deleted successfully.");
+            } else {
+                System.out.println("Devis with ID " + id + " was not found.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void update(Devis devis, String column, String value) {
+        String sql = "UPDATE devis SET " + column + " = ? WHERE id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
+            if (column.equals("montantestime")) {
+                preparedStatement.setDouble(1, Double.parseDouble(value));
+            } else if (column.equals("dateemission") || column.equals("datevalidite")) {
+                preparedStatement.setDate(1, Date.valueOf(value));
+            } else if (column.equals("accepte")) {
+                preparedStatement.setBoolean(1, Boolean.parseBoolean(value));
+            } else {
+                preparedStatement.setString(1, value);
+            }
+
+            preparedStatement.setInt(2 , devis.getId_Devis());
+            int affectedrows = preparedStatement.executeUpdate();
+
+            if (affectedrows > 0){
+                System.out.println("Main Doeuvre with ID " + devis.getId_Devis() + " was updated successfully.");
+            }
+
+        } catch (RuntimeException | SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
