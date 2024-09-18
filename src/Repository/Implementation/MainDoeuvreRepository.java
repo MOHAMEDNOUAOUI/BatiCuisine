@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class MainDoeuvreRepository implements MainDoeuvreRepositoryInterface {
 
@@ -23,22 +24,16 @@ public class MainDoeuvreRepository implements MainDoeuvreRepositoryInterface {
     @Override
     public MainDœuvre save(MainDœuvre mainDœuvre) {
         String sql = "INSERT INTO maindœuvre (nom, tauxTVA, typeComposant ,tauxhoraire , heurestravail ,productiviteouvrier , projet_id ) VALUES (?, ?, ? ,?,?,?,?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql , PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, mainDœuvre.getNom());
             preparedStatement.setDouble(2, mainDœuvre.getTauxTVA());
             preparedStatement.setString(3, mainDœuvre.getTypeComposant());
             preparedStatement.setDouble(4,mainDœuvre.getTauxHoraire());
             preparedStatement.setDouble(5,mainDœuvre.getHeuresTravai());
             preparedStatement.setDouble(6,mainDœuvre.getProductiviteOuvrier());
-            preparedStatement.setInt(7 , mainDœuvre.getProjet().getId());
-            int affectedrows = preparedStatement.executeUpdate();
-            if (affectedrows == 0) {
-                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        mainDœuvre.setId(generatedKeys.getInt(1));
-                    }
-                }
-            }
+            preparedStatement.setObject(7 , mainDœuvre.getProjet().getId());
+            preparedStatement.executeUpdate();
+
 
             return mainDœuvre;
 
@@ -49,14 +44,15 @@ public class MainDoeuvreRepository implements MainDoeuvreRepositoryInterface {
     }
 
     @Override
-    public Optional<MainDœuvre> findById(int id) throws SQLException {
+    public Optional<MainDœuvre> findById(UUID id) throws SQLException {
        MainDœuvre mainDœuvre = new MainDœuvre();
 
         String sql= "SELECT * from maindœuvre where id_composants = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-            preparedStatement.setInt(1, id);
+            preparedStatement.setObject(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
+                mainDœuvre.setId(resultSet.getObject("id_composants" , UUID.class));
                 mainDœuvre.setNom(resultSet.getString("nom"));
                 mainDœuvre.setTauxTVA(resultSet.getDouble("tauxTVA"));
                 mainDœuvre.setTypeComposant(resultSet.getString("typeComposant"));
@@ -78,6 +74,7 @@ public class MainDoeuvreRepository implements MainDoeuvreRepositoryInterface {
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 MainDœuvre mainDœuvre = new MainDœuvre();
+                mainDœuvre.setId(resultSet.getObject("id_composants" , UUID.class));
                 mainDœuvre.setNom(resultSet.getString("nom"));
                 mainDœuvre.setTauxTVA(resultSet.getDouble("tauxTVA"));
                 mainDœuvre.setTypeComposant(resultSet.getString("typeComposant"));
@@ -96,10 +93,10 @@ public class MainDoeuvreRepository implements MainDoeuvreRepositoryInterface {
 
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(UUID id) {
         String sql = "DELETE FROM maindœuvre where id_composants = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-            preparedStatement.setInt(1, id);
+            preparedStatement.setObject(1, id);
             int affectedRows = preparedStatement.executeUpdate();
 
             if (affectedRows > 0) {
@@ -124,7 +121,7 @@ public class MainDoeuvreRepository implements MainDoeuvreRepositoryInterface {
                 preparedStatement.setString(1, value);
             }
 
-            preparedStatement.setInt(2 , mainDœuvre.getId());
+            preparedStatement.setObject(2 , mainDœuvre.getId());
             int affectedrows = preparedStatement.executeUpdate();
 
             if (affectedrows > 0){

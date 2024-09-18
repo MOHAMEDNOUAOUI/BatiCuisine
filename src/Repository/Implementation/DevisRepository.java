@@ -26,21 +26,14 @@ public class DevisRepository implements DevisRepositoryInterface {
     @Override
     public Devis save(Devis devis) throws SQLException {
         String sql = "insert into devis (montantestime , dateemission , datevalidite , accepte , projet_id) values(?,?,?,?,?)";
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sql , PreparedStatement.RETURN_GENERATED_KEYS)){
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
             preparedStatement.setDouble(1,devis.getMontantEstime());
             preparedStatement.setDate(2, Date.valueOf(devis.getDateEmission()));
             preparedStatement.setDate(3, Date.valueOf(devis.getDateValidite()));
             preparedStatement.setBoolean(4,devis.isAccepte());
-            preparedStatement.setInt(5,devis.getProjet().getId());
+            preparedStatement.setObject(5,devis.getProjet().getId());
+            preparedStatement.executeUpdate();
 
-            int affectedrows = preparedStatement.executeUpdate();
-            if(affectedrows>0){
-                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        devis.setId_Devis(generatedKeys.getInt(1));
-                    }
-                }
-            }
         }
 
         return null;
@@ -50,24 +43,24 @@ public class DevisRepository implements DevisRepositoryInterface {
 
 
     @Override
-    public Optional<Devis> findById(int id) throws SQLException {
+    public Optional<Devis> findById(UUID id) throws SQLException {
         String sql = "select * from devis join projets on projets.id_projets = devis.projet_id\n" +
                 "JOIN Clients on Clients.id_clients = projets.clients_id_reference where devis.id_Devis = ?";
 
         Devis devis = new Devis();
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-            preparedStatement.setInt(1, id);
+            preparedStatement.setObject(1, id);
             try(ResultSet resultSet = preparedStatement.executeQuery()){
                 if(resultSet.next()){
 
-                    devis.setId_Devis(resultSet.getInt(1));
+                    devis.setId_Devis(resultSet.getObject(1 , UUID.class));
                     devis.setMontantEstime(resultSet.getDouble(2));
                     devis.setDateEmission(resultSet.getDate(3).toLocalDate());
                     devis.setDateValidite(resultSet.getDate(4).toLocalDate());
                     devis.setAccepte(resultSet.getBoolean(5));
 
                     Projets projets = new Projets();
-                    projets.setId(resultSet.getInt(6));
+                    projets.setId(resultSet.getObject(6 , UUID.class));
                     projets.setProjects_name(resultSet.getString(8));
                     projets.setMarge_benificiare(resultSet.getDouble(9));
                     projets.setCout_total(resultSet.getDouble(10));
@@ -75,7 +68,7 @@ public class DevisRepository implements DevisRepositoryInterface {
 
                     Clients clients = new Clients();
 
-                    clients.setId(resultSet.getInt(12));
+                    clients.setId(resultSet.getObject(12 , UUID.class));
                     clients.setNom(resultSet.getString(14));
                     clients.setAddress(resultSet.getString(15));
                     clients.setTelephone(resultSet.getString(16));
@@ -96,7 +89,7 @@ public class DevisRepository implements DevisRepositoryInterface {
         String sql = "select * from devis join projets on projets.id_projets = devis.projet_id\n" +
                 "JOIN Clients on Clients.id_clients = projets.clients_id_reference";
         List<Devis> devisList = new ArrayList<>();
-        Map<Integer , Projets> projetsMap = new HashMap<>();
+        Map<UUID , Projets> projetsMap = new HashMap<>();
 
 
 
@@ -106,13 +99,13 @@ public class DevisRepository implements DevisRepositoryInterface {
 
             while (resultSet.next()) {
                 Devis devis = new Devis();
-                devis.setId_Devis(resultSet.getInt(1));
+                devis.setId_Devis(resultSet.getObject(1 , UUID.class));
                 devis.setMontantEstime(resultSet.getDouble(2));
                 devis.setDateEmission(resultSet.getDate(3).toLocalDate());
                 devis.setDateValidite(resultSet.getDate(4).toLocalDate());
                 devis.setAccepte(resultSet.getBoolean(5));
 
-                int projectId = resultSet.getInt(6);
+                UUID projectId = resultSet.getObject(6 , UUID.class);
 
                 Projets projets = projetsMap.get(projectId);
                 if(projets == null){
@@ -124,7 +117,7 @@ public class DevisRepository implements DevisRepositoryInterface {
                     projets.setEtat_projet(Etat_Projet.valueOf(resultSet.getString(11)));
 
                     Clients clients = new Clients();
-                    clients.setId(resultSet.getInt(12));
+                    clients.setId(resultSet.getObject(12 , UUID.class));
                     clients.setNom(resultSet.getString(14));
                     clients.setAddress(resultSet.getString(15));
                     clients.setTelephone(resultSet.getString(16));
@@ -151,10 +144,10 @@ public class DevisRepository implements DevisRepositoryInterface {
 
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(UUID id) {
         String sql = "DELETE FROM devis where id_devis = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-            preparedStatement.setInt(1, id);
+            preparedStatement.setObject(1, id);
             int affectedRows = preparedStatement.executeUpdate();
 
             if (affectedRows > 0) {
@@ -182,7 +175,7 @@ public class DevisRepository implements DevisRepositoryInterface {
                 preparedStatement.setString(1, value);
             }
 
-            preparedStatement.setInt(2 , devis.getId_Devis());
+            preparedStatement.setObject(2 , devis.getId_Devis());
             int affectedrows = preparedStatement.executeUpdate();
 
             if (affectedrows > 0){

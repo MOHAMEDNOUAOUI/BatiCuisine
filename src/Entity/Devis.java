@@ -1,21 +1,24 @@
 package Entity;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class Devis {
-    private int id_Devis;
+    private UUID id_Devis;
     private Double montantEstime;
     private LocalDate dateEmission;
     private LocalDate dateValidite;
     private boolean accepte;
     private Projets projet;
 
-    public Devis() {}
+    public Devis() {
+        this.id_Devis = UUID.randomUUID();
+    }
 
-    public int getId_Devis() {
+    public UUID getId_Devis() {
         return id_Devis;
     }
-    public void setId_Devis(int id_Devis) {
+    public void setId_Devis(UUID id_Devis) {
         this.id_Devis = id_Devis;
     }
     public Double getMontantEstime() {

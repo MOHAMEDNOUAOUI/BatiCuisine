@@ -3,19 +3,19 @@ CREATE TYPE ClientsStatut AS ENUM ('ACTIVE' , 'DELETED')
 
 
 CREATE TABLE Projets (
-    id_Projets SERIAL PRIMARY KEY,
+    id_Projets UUID PRIMARY KEY,
     projects_name VARCHAR(100) NOT NULL,
     marge_benificiare DECIMAL(10, 2),
     cout_total DECIMAL(12, 2),
     etat_projet Etat_Projet,
-    clients_id_reference int,
+    clients_id_reference UUID,
     foreign key (clients_id_reference) references Clients(id_Clients)
 );
 
 
 
 CREATE TABLE Clients (
-    id_Clients SERIAL primary key,
+    id_Clients UUID PRIMARY KEY,
     nom VARCHAR(50),
     adresse VARCHAR(80),
     telephone VARCHAR(20),
@@ -24,11 +24,11 @@ CREATE TABLE Clients (
 )
 
 CREATE TABLE Composants (
-    id_Composants SERIAL PRIMARY KEY,
+    id_Composants UUID PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
     tauxTVA DECIMAL(5, 2),
     typeComposant VARCHAR(50),
-    projet_id INT REFERENCES Projets(id_Projets)
+    projet_id UUID REFERENCES Projets(id_Projets)
 );
 
 CREATE TABLE MainDœuvre (
@@ -45,10 +45,10 @@ CREATE TABLE Matériaux (
 ) INHERITS (Composants);
 
 CREATE TABLE  Devis (
-    id_Devis SERIAL primary key,
+    id_Devis UUID PRIMARY KEY,
     montantEstime DECIMAL(10, 2),
     dateEmission DATE,
     dateValidite DATE,
     accepte BOOLEAN,
-    projet_id INT REFERENCES Projets(id_Projets)
+    projet_id UUID REFERENCES Projets(id_Projets)
 )

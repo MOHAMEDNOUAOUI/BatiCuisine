@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class ComposantsRepository implements ComposantsRepositoryInterface {
 
@@ -21,7 +22,7 @@ public class ComposantsRepository implements ComposantsRepositoryInterface {
     }
 
     @Override
-    public Optional<Composants> findById(int id) {
+    public Optional<Composants> findById(UUID id) {
         return Optional.empty();
     }
 
@@ -36,7 +37,7 @@ public class ComposantsRepository implements ComposantsRepositoryInterface {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(UUID id) {
 
     }
 

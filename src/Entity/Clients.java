@@ -2,12 +2,13 @@ package Entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import Enum.*;
 
 public class Clients {
 
-    private int id_Clients;
+    private UUID id_Clients;
     private String nom;
     private String address;
     private String telephone;
@@ -16,12 +17,13 @@ public class Clients {
     private List<Projets> projetsList = new ArrayList<>();
 
     public Clients() {
+        this.id_Clients = UUID.randomUUID();
     }
 
-    public int getId() {
+    public UUID getId() {
         return id_Clients;
     }
-    public void setId(int id_Clients) {
+    public void setId(UUID id_Clients) {
         this.id_Clients = id_Clients;
     }
     public String getNom() {

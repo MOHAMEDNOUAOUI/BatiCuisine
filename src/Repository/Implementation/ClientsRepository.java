@@ -31,16 +31,7 @@ public class ClientsRepository implements ClientsRepositoryInterface {
             preparedStatement.setString(2 , client.getAddress());
             preparedStatement.setString(3 , client.getTelephone());
             preparedStatement.setBoolean(4,client.isEstProfessionel());
-            int affectedrows = preparedStatement.executeUpdate();
-
-            if (affectedrows > 0) {
-                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        client.setId(generatedKeys.getInt(1));
-                    }
-                }
-                return client;
-            }
+             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -50,31 +41,31 @@ public class ClientsRepository implements ClientsRepositoryInterface {
     }
 
     @Override
-    public Optional<Clients> findById(int id) throws SQLException {
+    public Optional<Clients> findById(UUID id) throws SQLException {
 
 
-        Map<Integer, Clients> Clientchecker = new HashMap<>();
+        Map<UUID, Clients> Clientchecker = new HashMap<>();
         Clients client = new Clients();
 
         String sql  = "select * from clients left join projets on projets.clients_id_reference = clients.id_clients WHERE clients.id_clients = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setObject(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
 
 
                 while (resultSet.next()) {
-                    if(!Clientchecker.containsKey(resultSet.getInt("id_clients"))) {
+                    if(!Clientchecker.containsKey(resultSet.getObject("id_clients" , UUID.class))) {
 
-                        client.setId(resultSet.getInt("id_clients"));
+                        client.setId(resultSet.getObject("id_clients" , UUID.class));
                         client.setNom(resultSet.getString("nom"));
                         client.setAddress(resultSet.getString("adresse"));
                         client.setTelephone(resultSet.getString("telephone"));
                         client.setEstProfessionel(resultSet.getBoolean("estProfessionel"));
-                        Clientchecker.put(resultSet.getInt("id_clients"), client);
+                        Clientchecker.put(resultSet.getObject("id_clients" , UUID.class), client);
                     }
 
-                    int projetsid = resultSet.getInt("id_projets");
-                    if(projetsid > 0) {
+                    UUID projetsid = resultSet.getObject("id_projets" , UUID.class);
+                    if(projetsid != null) {
                         Projets projets = new Projets();
                         projets.setId(projetsid);
                         projets.setCout_total(resultSet.getDouble("cout_total"));
@@ -96,13 +87,13 @@ public class ClientsRepository implements ClientsRepositoryInterface {
     public List<Clients> findAll() {
         String sql = "SELECT * FROM clients LEFT JOIN projets ON projets.clients_id_reference = clients.id_clients";
 
-        Map<Integer, Clients> clientChecker = new HashMap<>();
+        Map<UUID, Clients> clientChecker = new HashMap<>();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
-                int clientId = resultSet.getInt("id_clients");
+                UUID clientId = resultSet.getObject("id_clients" , UUID.class);
 
 
                 Clients client = clientChecker.get(clientId);
@@ -116,8 +107,8 @@ public class ClientsRepository implements ClientsRepositoryInterface {
                     clientChecker.put(clientId, client);
                 }
 
-                int projetsId = resultSet.getInt("id_projets");
-                if (projetsId > 0) {
+                UUID projetsId = resultSet.getObject("id_projets" , UUID.class);
+                if (projetsId != null) {
                     Projets projets = new Projets();
                     projets.setId(projetsId);
                     projets.setCout_total(resultSet.getDouble("cout_total"));
@@ -136,11 +127,11 @@ public class ClientsRepository implements ClientsRepositoryInterface {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(UUID id) {
         String sql = "UPDATE clients set statut_client = 'DELETED' WHERE id_clients = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setObject(1, id);
 
             int affectedRows = preparedStatement.executeUpdate();
 
@@ -167,7 +158,7 @@ public class ClientsRepository implements ClientsRepositoryInterface {
                 preparedStatement.setString(1, value);
             }
 
-            preparedStatement.setInt(2 , client.getId());
+            preparedStatement.setObject(2 , client.getId());
             int affectedrows = preparedStatement.executeUpdate();
 
             if (affectedrows > 0){

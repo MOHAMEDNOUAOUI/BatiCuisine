@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class MateriauxRepository implements MateriauxRepositoryInterface {
 
@@ -23,7 +24,7 @@ public class MateriauxRepository implements MateriauxRepositoryInterface {
     @Override
     public Materiaux save(Materiaux materiaux) {
         String sql = "INSERT INTO matériaux (nom, tauxTVA, typeComposant ,coutunitaire,quantity,couttransport,coefficientqualite, projet_id ) VALUES (?, ?, ? ,?,?,?,?,?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql , PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, materiaux.getNom());
             preparedStatement.setDouble(2, materiaux.getTauxTVA());
             preparedStatement.setString(3, materiaux.getTypeComposant());
@@ -31,15 +32,8 @@ public class MateriauxRepository implements MateriauxRepositoryInterface {
             preparedStatement.setDouble(5,materiaux.getQuantite());
             preparedStatement.setDouble(6,materiaux.getCoutTransport());
             preparedStatement.setDouble(7,materiaux.getCoefficientQualite());
-            preparedStatement.setInt(8 , materiaux.getProjet().getId());
-            int affectedrows = preparedStatement.executeUpdate();
-            if (affectedrows == 0) {
-                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        materiaux.setId(generatedKeys.getInt(1));
-                    }
-                }
-            }
+            preparedStatement.setObject(8 , materiaux.getProjet().getId());
+            preparedStatement.executeUpdate();
 
             return materiaux;
 
@@ -52,15 +46,15 @@ public class MateriauxRepository implements MateriauxRepositoryInterface {
 
 
     @Override
-    public Optional<Materiaux> findById(int id) throws SQLException {
+    public Optional<Materiaux> findById(UUID id) throws SQLException {
         Materiaux materiaux = new Materiaux();
 
         String sql= "SELECT * from matériaux where id_composants = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-            preparedStatement.setInt(1, id);
+            preparedStatement.setObject(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
-                materiaux.setId(resultSet.getInt(1));
+                materiaux.setId(resultSet.getObject(1 , UUID.class));
                 materiaux.setNom(resultSet.getString(2));
                 materiaux.setTauxTVA(resultSet.getDouble(3));
                 materiaux.setTypeComposant(resultSet.getString(4));
@@ -85,7 +79,7 @@ public class MateriauxRepository implements MateriauxRepositoryInterface {
 
             while (resultSet.next()){
                 Materiaux materiaux = new Materiaux();
-                materiaux.setId(resultSet.getInt(1));
+                materiaux.setId(resultSet.getObject(1 , UUID.class));
                 materiaux.setNom(resultSet.getString(2));
                 materiaux.setTauxTVA(resultSet.getDouble(3));
                 materiaux.setTypeComposant(resultSet.getString(4));
@@ -107,10 +101,10 @@ public class MateriauxRepository implements MateriauxRepositoryInterface {
 
 
     @Override
-    public void deleteById(int id) throws SQLException {
+    public void deleteById(UUID id) throws SQLException {
                 String sql = "DELETE FROM matériaux where id_composants = ?";
                 try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-                    preparedStatement.setInt(1, id);
+                    preparedStatement.setObject(1, id);
                     int affectedRows = preparedStatement.executeUpdate();
 
                     if (affectedRows > 0) {
@@ -133,7 +127,7 @@ public class MateriauxRepository implements MateriauxRepositoryInterface {
                 preparedStatement.setString(1, value);
             }
 
-            preparedStatement.setInt(2 , materiaux.getId());
+            preparedStatement.setObject(2 , materiaux.getId());
             int affectedrows = preparedStatement.executeUpdate();
 
             if (affectedrows > 0){

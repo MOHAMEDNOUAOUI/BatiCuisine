@@ -1,20 +1,22 @@
 package Entity;
 
+import java.util.UUID;
+
 public class Composants {
-    protected int id_Composants;
+    protected UUID id_Composants;
     protected String nom;
     protected Double tauxTVA;
     protected String typeComposant;
     private Projets projet;
 
     public Composants() {
-
+        this.id_Composants = UUID.randomUUID();
     }
 
-    public int getId() {
+    public UUID getId() {
         return id_Composants;
     }
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id_Composants = id;
     }
     public String getNom() {

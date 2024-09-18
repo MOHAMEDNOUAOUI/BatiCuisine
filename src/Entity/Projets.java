@@ -3,9 +3,10 @@ import Enum.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Projets {
-    private int id_Projets;
+    private UUID id_Projets;
     private String projects_name;
     private Double marge_benificiare;
     private Double cout_total;
@@ -15,13 +16,13 @@ public class Projets {
     private List<Devis> devisList = new ArrayList<>();
 
     public Projets() {
-
+        this.id_Projets = UUID.randomUUID();
     }
 
-    public int getId(){
+    public UUID getId(){
         return id_Projets;
     }
-    public void setId(int id_Projets){
+    public void setId(UUID id_Projets){
         this.id_Projets = id_Projets;
     }
     public String getProjects_name(){

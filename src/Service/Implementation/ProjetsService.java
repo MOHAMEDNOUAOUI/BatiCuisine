@@ -1,4 +1,6 @@
 package Service.Implementation;
 
-public class ProjetsService {
+import Service.Interface.ProjetsServiceInterface;
+
+public class ProjetsService implements ProjetsServiceInterface {
 }

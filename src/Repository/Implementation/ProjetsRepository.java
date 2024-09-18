@@ -28,40 +28,33 @@ public class ProjetsRepository implements ProjetsRepositoryInterface {
     @Override
     public Projets save(Projets projet) throws SQLException {
         String sql = "INSERT INTO projets (projects_name,marge_benificiare,cout_total,etat_projet,client_id_reference) VALUES(?,?,?,?,?)";
-        try(PreparedStatement ps = connection.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try(PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, projet.getProjects_name());
             ps.setDouble(2, projet.getMarge_benificiare());
             ps.setDouble(3, projet.getCout_total());
             ps.setString(4, projet.getEtat_projet().toString());
-            ps.setInt(5,projet.getClient().getId());
-            int affectedrows = ps.executeUpdate();
-            if (affectedrows == 0) {
-                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        projet.setId(generatedKeys.getInt(1));
-                    }
-                }
-            }
+            ps.setObject(5,projet.getClient().getId());
+            ps.executeUpdate();
         }
         return null;
     }
 
     @Override
-    public Optional<Projets> findById(int id) throws SQLException {
+    public Optional<Projets> findById(UUID id) throws SQLException {
         String sql = "SELECT * FROM projets JOIN clients ON clients.id_clients = projets.clients_id_reference LEFT JOIN Devis on Devis.projet_id = projets.id_projets WHERE projets.id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setObject(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     Projets projet = new Projets();
-                    projet.setId(resultSet.getInt(1));
+                    projet.setId(resultSet.getObject(1 , UUID.class));
                     projet.setProjects_name(resultSet.getString(2));
                     projet.setMarge_benificiare(resultSet.getDouble(3));
                     projet.setCout_total(resultSet.getDouble(4));
                     projet.setEtat_projet(Etat_Projet.valueOf(resultSet.getString(5)));
 
-                    int clientid = resultSet.getInt(6);
-                    if (clientid > 0) {
+                    UUID clientid = resultSet.getObject(6 , UUID.class);
+                    if (clientid != null) {
                         Clients clients = new Clients();
                         clients.setId(clientid);
                         clients.setNom(resultSet.getString(7));
@@ -72,8 +65,8 @@ public class ProjetsRepository implements ProjetsRepositoryInterface {
                         projet.setClient(clients);
                     }
                     while (resultSet.next()) {
-                        int devisId = resultSet.getInt("id_devis");
-                        if (devisId > 0) {
+                        UUID devisId = resultSet.getObject("id_devis" , UUID.class);
+                        if (devisId != null) {
                             Devis devis = new Devis();
                             devis.setMontantEstime(resultSet.getDouble("montant_estime"));
                             devis.setDateEmission(resultSet.getDate("dateemission").toLocalDate());
@@ -96,15 +89,15 @@ public class ProjetsRepository implements ProjetsRepositoryInterface {
     @Override
     public List<Projets> findAll() throws SQLException {
         String sql = "SELECT * FROM projets JOIN clients ON clients.id_clients = projets.clients_id_reference LEFT JOIN Devis on Devis.projet_id = projets.id_projets";
-        Map<Integer, Clients> clientMap = new HashMap<>();
-        Map<Integer, Devis> devisMap = new HashMap<>();
+        Map<UUID, Clients> clientMap = new HashMap<>();
+        Map<UUID, Devis> devisMap = new HashMap<>();
         List<Projets> projetsList = new ArrayList<>();
 
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery()){
 
             while (resultSet.next()) {
-                int clientId = resultSet.getInt(6);
+                UUID clientId = resultSet.getObject(6 , UUID.class);
                 Clients client;
                 Devis devis;
 
@@ -122,7 +115,7 @@ public class ProjetsRepository implements ProjetsRepositoryInterface {
                     client = clientMap.get(clientId);
                 }
 
-                int devisId = resultSet.getInt("id_devis");
+                UUID devisId = resultSet.getObject("id_devis" , UUID.class);
                 if (!devisMap.containsKey(devisId)) {
                     devis = new Devis();
                     devis.setId_Devis(devisId);
@@ -137,7 +130,7 @@ public class ProjetsRepository implements ProjetsRepositoryInterface {
 
 
                 Projets projet = new Projets();
-                projet.setId(resultSet.getInt(1));
+                projet.setId(resultSet.getObject(1 , UUID.class));
                 projet.setProjects_name(resultSet.getString(2));
                 projet.setMarge_benificiare(resultSet.getDouble(3));
                 projet.setCout_total(resultSet.getDouble(4));
@@ -172,7 +165,7 @@ public class ProjetsRepository implements ProjetsRepositoryInterface {
             }
 
 
-            preparedStatement.setInt(2, projet.getId());
+            preparedStatement.setObject(2, projet.getId());
             int affectedrows = preparedStatement.executeUpdate();
 
             if (affectedrows > 0){
@@ -182,10 +175,10 @@ public class ProjetsRepository implements ProjetsRepositoryInterface {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(UUID id) {
             String sql = "UPDATE projets set etat_projet = 'ANNULE' WHERE id = ?";
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setInt(1, id);
+                preparedStatement.setObject(1, id);
                 int AffectedRows = preparedStatement.executeUpdate();
                 if (AffectedRows > 0) {
                     System.out.println("Projet with ID " + id + " was updated successfully.");
