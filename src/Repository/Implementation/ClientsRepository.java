@@ -25,19 +25,20 @@ public class ClientsRepository implements ClientsRepositoryInterface {
     public Clients save(Clients client) {
 
         try{
-            String sql = "INSERT INTO Clients (nom, address, telephone, estProfessionel , statut_client) VALUES (?, ?, ?, ? , 'ACTIVE')";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql , PreparedStatement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1,client.getNom());
-            preparedStatement.setString(2 , client.getAddress());
-            preparedStatement.setString(3 , client.getTelephone());
-            preparedStatement.setBoolean(4,client.isEstProfessionel());
-             preparedStatement.executeUpdate();
+            String sql = "INSERT INTO Clients (id_clients , nom, adresse, telephone, estProfessionel , statut_client) VALUES (?,?, ?, ?, ? , 'ACTIVE')";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setObject(1,client.getId());
+            preparedStatement.setString(2,client.getNom());
+            preparedStatement.setString(3 , client.getAddress());
+            preparedStatement.setString(4 , client.getTelephone());
+            preparedStatement.setBoolean(5,client.isEstProfessionel());
+            preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        return null;
+        return client;
     }
 
     @Override

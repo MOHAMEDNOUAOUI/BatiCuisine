@@ -11,7 +11,7 @@ public class Database {
 
 
     public static void Database () {
-        String URL = "jdbc:postgresql://localhost:5432/database";
+        String URL = "jdbc:postgresql://localhost:5432/baticuisine";
         String USERNAME = "postgres";
         String PASSWORD = "root";
 
@@ -31,5 +31,7 @@ public class Database {
             return con;
         }
     }
+
+
 
 }

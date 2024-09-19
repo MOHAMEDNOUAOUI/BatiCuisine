@@ -216,11 +216,30 @@
 									"model": {
 										"$ref": "AAAAAAGR9ZEIghQ3zHM="
 									},
+									"subViews": [
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGSBYGVr/H/Ixg=",
+											"_parent": {
+												"$ref": "AAAAAAGR9ZEIgxRANHE="
+											},
+											"model": {
+												"$ref": "AAAAAAGSBYGVmPH8QMQ="
+											},
+											"font": "Arial;13;0",
+											"left": 293,
+											"top": 305,
+											"width": 191,
+											"height": 13,
+											"text": "+addProject()",
+											"horizontalAlignment": 0
+										}
+									],
 									"font": "Arial;13;0",
 									"left": 288,
 									"top": 300,
 									"width": 201,
-									"height": 10
+									"height": 23
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -1894,6 +1913,24 @@
 											"height": 13,
 											"text": "-estProfessionel boolean",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGSBYIpqvWZaAA=",
+											"_parent": {
+												"$ref": "AAAAAAGR9kJtEOtjGDM="
+											},
+											"model": {
+												"$ref": "AAAAAAGSBYIpmfWTlSA="
+											},
+											"visible": false,
+											"font": "Arial;13;0",
+											"left": 661,
+											"top": 297,
+											"width": 183,
+											"height": 13,
+											"text": "+Attribute1",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
@@ -1911,11 +1948,30 @@
 									"model": {
 										"$ref": "AAAAAAGR9kJtDutbO+I="
 									},
+									"subViews": [
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGSBYI73fZCvaA=",
+											"_parent": {
+												"$ref": "AAAAAAGR9kJtEOtkUYE="
+											},
+											"model": {
+												"$ref": "AAAAAAGSBYI7zfY8CGI="
+											},
+											"font": "Arial;13;0",
+											"left": 661,
+											"top": 305,
+											"width": 183,
+											"height": 13,
+											"text": "+addClient()",
+											"horizontalAlignment": 0
+										}
+									],
 									"font": "Arial;13;0",
 									"left": 656,
 									"top": 300,
 									"width": 193,
-									"height": 10
+									"height": 23
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -2169,11 +2225,65 @@
 									"model": {
 										"$ref": "AAAAAAGR9kN8Lu3R8II="
 									},
+									"subViews": [
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGSBYHhb/NW4Lg=",
+											"_parent": {
+												"$ref": "AAAAAAGR9kN8Lu3apS8="
+											},
+											"model": {
+												"$ref": "AAAAAAGSBYHhYfNQeds="
+											},
+											"font": "Arial;13;0",
+											"left": 677,
+											"top": 577,
+											"width": 183,
+											"height": 13,
+											"text": "+CreateDevis()",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGSBYH57vQ1BkU=",
+											"_parent": {
+												"$ref": "AAAAAAGR9kN8Lu3apS8="
+											},
+											"model": {
+												"$ref": "AAAAAAGSBYH54vQvPmQ="
+											},
+											"font": "Arial;13;0",
+											"left": 677,
+											"top": 592,
+											"width": 183,
+											"height": 13,
+											"text": "+ModifierDevis()",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGSBYILL/SfPFI=",
+											"_parent": {
+												"$ref": "AAAAAAGR9kN8Lu3apS8="
+											},
+											"model": {
+												"$ref": "AAAAAAGSBYILJ/SZGcA="
+											},
+											"visible": false,
+											"font": "Arial;13;0",
+											"left": 677,
+											"top": 607,
+											"width": 183,
+											"height": 13,
+											"text": "+Operation1()",
+											"horizontalAlignment": 0
+										}
+									],
 									"font": "Arial;13;0",
 									"left": 672,
 									"top": 572,
 									"width": 193,
-									"height": 10
+									"height": 38
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -2211,7 +2321,7 @@
 							"left": 672,
 							"top": 464,
 							"width": 192,
-							"height": 160,
+							"height": 161,
 							"nameCompartment": {
 								"$ref": "AAAAAAGR9kN8Lu3U0YM="
 							},
@@ -3192,6 +3302,16 @@
 							"name": "etat_projet Etat_Projet",
 							"type": ""
 						}
+					],
+					"operations": [
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGSBYGVmPH8QMQ=",
+							"_parent": {
+								"$ref": "AAAAAAGR9ZEIghQ3zHM="
+							},
+							"name": "addProject"
+						}
 					]
 				},
 				{
@@ -3462,6 +3582,25 @@
 							"name": "estProfessionel boolean",
 							"visibility": "private",
 							"type": ""
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGSBYIpmfWTlSA=",
+							"_parent": {
+								"$ref": "AAAAAAGR9kJtDutbO+I="
+							},
+							"name": "Attribute1",
+							"type": ""
+						}
+					],
+					"operations": [
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGSBYI7zfY8CGI=",
+							"_parent": {
+								"$ref": "AAAAAAGR9kJtDutbO+I="
+							},
+							"name": "addClient"
 						}
 					]
 				},
@@ -3522,6 +3661,32 @@
 							"name": "accepte boolean",
 							"visibility": "private",
 							"type": ""
+						}
+					],
+					"operations": [
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGSBYHhYfNQeds=",
+							"_parent": {
+								"$ref": "AAAAAAGR9kN8Lu3R8II="
+							},
+							"name": "CreateDevis"
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGSBYH54vQvPmQ=",
+							"_parent": {
+								"$ref": "AAAAAAGR9kN8Lu3R8II="
+							},
+							"name": "ModifierDevis"
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGSBYILJ/SZGcA=",
+							"_parent": {
+								"$ref": "AAAAAAGR9kN8Lu3R8II="
+							},
+							"name": "Operation1"
 						}
 					]
 				}

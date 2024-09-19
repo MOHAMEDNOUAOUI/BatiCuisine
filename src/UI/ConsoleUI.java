@@ -1,5 +1,6 @@
 package UI;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import static UI.ProjectUI.CreateProject;
@@ -11,7 +12,7 @@ public class ConsoleUI {
 
     private static final Scanner scanner = new Scanner(System.in);
 
-    public static void mainUI() throws InterruptedException {
+    public static void mainUI() throws InterruptedException, SQLException {
                 while (true){
                     System.out.println("+=========================================+");
                     System.out.println("|              MENU PRINCIPAL             |");
