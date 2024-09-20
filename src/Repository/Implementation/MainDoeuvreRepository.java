@@ -23,15 +23,16 @@ public class MainDoeuvreRepository implements MainDoeuvreRepositoryInterface {
 
     @Override
     public MainDœuvre save(MainDœuvre mainDœuvre) {
-        String sql = "INSERT INTO maindœuvre (nom, tauxTVA, typeComposant ,tauxhoraire , heurestravail ,productiviteouvrier , projet_id ) VALUES (?, ?, ? ,?,?,?,?)";
+        String sql = "INSERT INTO maindœuvre (id_composants , nom, tauxTVA, typeComposant ,tauxhoraire , heurestravail ,productiviteouvrier , projet_id ) VALUES (?,?, ?, ? ,?,?,?,?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, mainDœuvre.getNom());
-            preparedStatement.setDouble(2, mainDœuvre.getTauxTVA());
-            preparedStatement.setString(3, mainDœuvre.getTypeComposant());
-            preparedStatement.setDouble(4,mainDœuvre.getTauxHoraire());
-            preparedStatement.setDouble(5,mainDœuvre.getHeuresTravai());
-            preparedStatement.setDouble(6,mainDœuvre.getProductiviteOuvrier());
-            preparedStatement.setObject(7 , mainDœuvre.getProjet().getId());
+            preparedStatement.setObject(1 , mainDœuvre.getId());
+            preparedStatement.setString(2, mainDœuvre.getNom());
+            preparedStatement.setDouble(3, mainDœuvre.getTauxTVA());
+            preparedStatement.setString(4, mainDœuvre.getTypeComposant());
+            preparedStatement.setDouble(5,mainDœuvre.getTauxHoraire());
+            preparedStatement.setDouble(6,mainDœuvre.getHeuresTravai());
+            preparedStatement.setDouble(7,mainDœuvre.getProductiviteOuvrier());
+            preparedStatement.setObject(8 , mainDœuvre.getProjet().getId());
             preparedStatement.executeUpdate();
 
 

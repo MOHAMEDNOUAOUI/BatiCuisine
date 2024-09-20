@@ -12,7 +12,8 @@ public class Projets {
     private Double cout_total;
     private Etat_Projet etat_projet;
     private Clients client;
-    private List<Composants> composantsList = new ArrayList<Composants>();
+    private List<MainDœuvre> mainDœuvreList = new ArrayList<>();
+    private List<Materiaux> materiauxList = new ArrayList<>();
     private List<Devis> devisList = new ArrayList<>();
 
     public Projets() {
@@ -64,10 +65,16 @@ public class Projets {
     public void setDevisList(Devis devis) {
         this.devisList.add(devis);
     }
-    public List<Composants> getComposantsList() {
-        return composantsList;
+
+
+    public List<MainDœuvre> getMainDœuvreList(){return this.mainDœuvreList;};
+    public List<Materiaux> getMateriauxList() {return this.materiauxList;};
+
+    public void setMainDœuvreList(List<MainDœuvre> mainDœuvreList){
+        this.mainDœuvreList = mainDœuvreList;
     }
-    public void setComposantsList(Composants composants) {
-        this.composantsList.add(composants);
+
+    public void setMateriauxList(List<Materiaux> materiauxList) {
+        this.materiauxList = materiauxList;
     }
 }

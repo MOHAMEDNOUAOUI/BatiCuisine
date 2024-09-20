@@ -62,6 +62,7 @@ public class ClientsRepository implements ClientsRepositoryInterface {
                         client.setAddress(resultSet.getString("adresse"));
                         client.setTelephone(resultSet.getString("telephone"));
                         client.setEstProfessionel(resultSet.getBoolean("estProfessionel"));
+                        client.setStatut_user(ClientsStatut.valueOf(resultSet.getString("statut_client")));
                         Clientchecker.put(resultSet.getObject("id_clients" , UUID.class), client);
                     }
 

@@ -23,16 +23,17 @@ public class MateriauxRepository implements MateriauxRepositoryInterface {
 
     @Override
     public Materiaux save(Materiaux materiaux) {
-        String sql = "INSERT INTO matériaux (nom, tauxTVA, typeComposant ,coutunitaire,quantity,couttransport,coefficientqualite, projet_id ) VALUES (?, ?, ? ,?,?,?,?,?)";
+        String sql = "INSERT INTO matériaux (id_composants,nom, tauxTVA, typeComposant ,coutunitaire,quantity,couttransport,coefficientqualite, projet_id ) VALUES (? ,?, ?, ? ,?,?,?,?,?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, materiaux.getNom());
-            preparedStatement.setDouble(2, materiaux.getTauxTVA());
-            preparedStatement.setString(3, materiaux.getTypeComposant());
-            preparedStatement.setDouble(4,materiaux.getCoutUnitaire());
-            preparedStatement.setDouble(5,materiaux.getQuantite());
-            preparedStatement.setDouble(6,materiaux.getCoutTransport());
-            preparedStatement.setDouble(7,materiaux.getCoefficientQualite());
-            preparedStatement.setObject(8 , materiaux.getProjet().getId());
+            preparedStatement.setObject(1, materiaux.getId());
+            preparedStatement.setString(2, materiaux.getNom());
+            preparedStatement.setDouble(3, materiaux.getTauxTVA());
+            preparedStatement.setString(4, materiaux.getTypeComposant());
+            preparedStatement.setDouble(5,materiaux.getCoutUnitaire());
+            preparedStatement.setDouble(6,materiaux.getQuantite());
+            preparedStatement.setDouble(7,materiaux.getCoutTransport());
+            preparedStatement.setDouble(8,materiaux.getCoefficientQualite());
+            preparedStatement.setObject(9, materiaux.getProjet().getId());
             preparedStatement.executeUpdate();
 
             return materiaux;

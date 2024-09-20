@@ -3,6 +3,8 @@ package UI;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import static UI.ClientMainUi.MainClient;
+import static UI.ProjectMainUI.MainProject;
 import static UI.ProjectUI.CreateProject;
 
 
@@ -17,10 +19,9 @@ public class ConsoleUI {
                     System.out.println("+=========================================+");
                     System.out.println("|              MENU PRINCIPAL             |");
                     System.out.println("+=========================================+");
-                    System.out.println("|  1. Créer un nouveau projet             |");
-                    System.out.println("|  2. Afficher les projets existants      |");
-                    System.out.println("|  3. Calculer le coût d'un projet        |");
-                    System.out.println("|  4. Quitter                             |");
+                    System.out.println("|  1. Gestion Du Projects                 |");
+                    System.out.println("|  2. Gestion Du Clients                  |");
+                    System.out.println("|  3. Quitter                             |");
                     System.out.println("+=========================================+");
                     System.out.println();
                     System.out.println("Please enter a number : ");
@@ -30,17 +31,14 @@ public class ConsoleUI {
 
                     switch (choice) {
                         case 1:
-                            CreateProject();
+                            MainProject();
                             break;
 
                         case 2:
+                            MainClient();
                             break;
 
                         case 3:
-                            break;
-
-
-                        case 4:
                             System.out.println("Quitting");
                             Thread.sleep(3000);
                             return;

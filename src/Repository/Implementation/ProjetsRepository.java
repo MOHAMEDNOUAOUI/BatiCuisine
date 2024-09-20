@@ -27,13 +27,14 @@ public class ProjetsRepository implements ProjetsRepositoryInterface {
 
     @Override
     public Projets save(Projets projet) throws SQLException {
-        String sql = "INSERT INTO projets (projects_name,marge_benificiare,cout_total,etat_projet,client_id_reference) VALUES(?,?,?,?,?)";
-        try(PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, projet.getProjects_name());
-            ps.setDouble(2, projet.getMarge_benificiare());
-            ps.setDouble(3, projet.getCout_total());
-            ps.setString(4, projet.getEtat_projet().toString());
-            ps.setObject(5,projet.getClient().getId());
+        String sql = "INSERT INTO projets (id_projets , projects_name,marge_benificiare,cout_total,etat_projet,clients_id_reference) VALUES(?,?,?,?,?::etat_projet,?)";
+        try(PreparedStatement ps = connection.prepareStatement(sql)){
+            ps.setObject(1 , projet.getId());
+            ps.setString(2, projet.getProjects_name());
+            ps.setDouble(3, projet.getMarge_benificiare());
+            ps.setDouble(4, projet.getCout_total());
+            ps.setString(5, projet.getEtat_projet().toString());
+            ps.setObject(6,projet.getClient().getId());
             ps.executeUpdate();
         }
         return null;
