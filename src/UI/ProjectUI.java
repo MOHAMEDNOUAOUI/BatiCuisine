@@ -2,6 +2,8 @@ package UI;
 
 import Entity.*;
 import Service.Implementation.ClientsService;
+import Service.Implementation.MainDoeuvreService;
+import Service.Implementation.MateriauxService;
 import Service.Implementation.ProjetsService;
 import com.sun.tools.javac.Main;
 
@@ -24,6 +26,8 @@ public class ProjectUI {
 
     private static ProjetsService projetsService = new ProjetsService();
     private static ClientsService clientsService = new ClientsService();
+    private static MainDoeuvreService mainDoeuvreService = new MainDoeuvreService();
+    private static MateriauxService materiauxService = new MateriauxService();
     private  static Scanner scanner = new Scanner(System.in);
 
 
@@ -148,13 +152,14 @@ public class ProjectUI {
             System.out.println(marge_benificiare);
             Thread.sleep(4000);
 
-            projetsService.createProject(nom , tauxTVA , marge_benificiare , materiauxList , mainDœuvreList , client);
+            Projets project = projetsService.createProject(nom , tauxTVA , marge_benificiare , materiauxList , mainDœuvreList , client);
 
             System.out.println("Wait a bit ...");
             Thread.sleep(3000);
 
             System.out.println("Project has been created succefully");
 
+            CalculateLeCout(project);
 
 
         }
@@ -188,15 +193,51 @@ public class ProjectUI {
 
                         Double initprice = project.getMateriauxList().stream()
                                 .map(e -> {
-                                    Double price = ((Optional.ofNullable(e.getQuantite()).orElse(0.0) * Optional.ofNullable(e.getCoutUnitaire()).orElse(0.0)) *Optional.ofNullable(e.getCoefficientQualite()).orElse(0.0) ) + Optional.ofNullable(e.getCoutTransport()).orElse(0.0);
-                                    System.out.println("- "+ e.getNom() +": "+ price +"$ (quantité : "+e.getQuantite()+" , coût unitaire : "+e.getCoutUnitaire()+" , qualité : "+e.getCoefficientQualite()+" , transport : "+e.getCoutTransport()+")");
-                                    return price;
+                                    Double firstprice = Optional.ofNullable(e.getQuantite()).orElse(0.0) * Optional.ofNullable(e.getCoutUnitaire()).orElse(0.0);
+                                    Double priceXquality = firstprice * Optional.ofNullable(e.getCoefficientQualite()).orElse(0.0);
+                                    Double PricePlusTransport = priceXquality + Optional.ofNullable(e.getCoutTransport()).orElse(0.0);
+                                    System.out.println("- "+ e.getNom() +": "+ PricePlusTransport +"$ (quantité : "+e.getQuantite()+" , coût unitaire : "+e.getCoutUnitaire()+" , qualité : "+e.getCoefficientQualite()+" , transport : "+e.getCoutTransport()+")");
+                                    return PricePlusTransport;
                                 })
                                 .reduce(0.0 , Double::sum);
 
 
                         System.out.println("**Coût total des matériaux avant TVA : "+ initprice);
+                        Double lastpricewithtva = (initprice * project.getMateriauxList().getFirst().getTauxTVA() ) / 100;
+                        System.out.println("**Coût total des matériaux avec TVA ("+project.getMateriauxList().getFirst().getTauxTVA()+"%) : "+lastpricewithtva);
                     }
+
+                    if(!project.getMainDœuvreList().isEmpty()){
+                        System.out.println("2. Main-d'œuvre :");
+                        System.out.println();
+
+                        Double initprice = project.getMainDœuvreList().stream()
+                                .map(e -> {
+                                    Double pricefirst = Optional.ofNullable(e.getTauxHoraire()).orElse(0.0) * Optional.ofNullable(e.getHeuresTravai()).orElse(0.0);
+                                    Double LastPrice = pricefirst * Optional.ofNullable(e.getProductiviteOuvrier()).orElse(0.0);
+                                    System.out.println("- "+ e.getNom() +": "+ LastPrice +"$ (taux horaire : "+e.getTauxHoraire()+" , Heures travaillées : "+e.getHeuresTravai()+" , roductivité : "+e.getProductiviteOuvrier());
+                                    return LastPrice;
+                                }).reduce(0.0 , Double::sum);
+
+                        System.out.println("**Coût total de la main-d'œuvre avant TVA : "+ initprice);
+                        Double lastpricewithtva = (initprice * project.getMainDœuvreList().getFirst().getTauxTVA() ) / 100;
+                        System.out.println("**Coût total des matériaux avec TVA ("+project.getMainDœuvreList().getFirst().getTauxTVA()+"%) : "+lastpricewithtva);
+
+                    }
+
+                    System.out.println();
+
+                    Double totalmaterials = materiauxService.CalculateTotalMaterials(project.getMateriauxList());
+                    Double totalMainDouvre = mainDoeuvreService.CalculateTotalMaindouvre(project.getMainDœuvreList());
+
+                    Double totalwithoutmarge = totalmaterials+totalMainDouvre;
+
+                    System.out.println("3. Coût total avant marge : "+totalwithoutmarge+" €");
+                    Double marge = totalwithoutmarge * project.getMarge_benificiare();
+                    Double Lastmarge =  marge / 100;
+                    System.out.println("4. Marge bénéficiaire (15%) : "+Lastmarge+" €");
+
+                    System.out.println("**Coût total final du projet : "+project.getCout_total()+" €**");
 
                 }
                 else {

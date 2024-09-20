@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface ProjetsServiceInterface {
 
-    public void createProject(String nom ,Double tauxtva , Double margebenificiaire , List<Materiaux> materiauxList , List<MainDœuvre> mainDœuvreList , Clients client) throws SQLException;
+    public Projets createProject(String nom ,Double tauxtva , Double margebenificiaire , List<Materiaux> materiauxList , List<MainDœuvre> mainDœuvreList , Clients client) throws SQLException;
 
 }

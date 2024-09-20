@@ -27,13 +27,13 @@ public class ProjetsService implements ProjetsServiceInterface {
     private MateriauxRepository materiauxRepository = new MateriauxRepository(connection);
 
     @Override
-    public void createProject(String nom, Double tauxtva, Double margebenificiaire, List<Materiaux> materiauxList, List<MainDœuvre> mainDœuvreList, Clients client) throws SQLException {
-
+    public Projets createProject(String nom, Double tauxtva, Double margebenificiaire, List<Materiaux> materiauxList, List<MainDœuvre> mainDœuvreList, Clients client) throws SQLException {
+        Projets MainProject = new Projets();
         if(validationprojectfunction(nom, tauxtva , margebenificiaire , materiauxList , mainDœuvreList, client)){
 
 
             /// Creating Project instance first
-            Projets MainProject = new Projets();
+
             MainProject.setProjects_name(nom);
             MainProject.setEtat_projet(Etat_Projet.ENCOURS);
             MainProject.setMarge_benificiare(margebenificiaire);
@@ -90,8 +90,12 @@ public class ProjetsService implements ProjetsServiceInterface {
             projetsRepository.save(MainProject);
             mainDœuvreList.forEach(e -> mainDoeuvreRepository.save(e));
             materiauxList.forEach(e -> materiauxRepository.save(e));
+
+
+
         }
 
+        return MainProject;
     }
 
 
