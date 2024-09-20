@@ -202,6 +202,10 @@ public class ProjectUI {
                                 .reduce(0.0 , Double::sum);
 
 
+
+
+
+
                         System.out.println("**Coût total des matériaux avant TVA : "+ initprice);
                         Double tauxtvaprice = (initprice * project.getMateriauxList().getFirst().getTauxTVA() ) / 100;
                         System.out.println("**Coût total des matériaux avec TVA ("+project.getMateriauxList().getFirst().getTauxTVA()+"%) : "+(initprice+tauxtvaprice));
