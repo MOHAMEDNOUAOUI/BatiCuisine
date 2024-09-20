@@ -203,8 +203,8 @@ public class ProjectUI {
 
 
                         System.out.println("**Coût total des matériaux avant TVA : "+ initprice);
-                        Double lastpricewithtva = (initprice * project.getMateriauxList().getFirst().getTauxTVA() ) / 100;
-                        System.out.println("**Coût total des matériaux avec TVA ("+project.getMateriauxList().getFirst().getTauxTVA()+"%) : "+lastpricewithtva);
+                        Double tauxtvaprice = (initprice * project.getMateriauxList().getFirst().getTauxTVA() ) / 100;
+                        System.out.println("**Coût total des matériaux avec TVA ("+project.getMateriauxList().getFirst().getTauxTVA()+"%) : "+(initprice+tauxtvaprice));
                     }
 
                     if(!project.getMainDœuvreList().isEmpty()){
@@ -220,8 +220,8 @@ public class ProjectUI {
                                 }).reduce(0.0 , Double::sum);
 
                         System.out.println("**Coût total de la main-d'œuvre avant TVA : "+ initprice);
-                        Double lastpricewithtva = (initprice * project.getMainDœuvreList().getFirst().getTauxTVA() ) / 100;
-                        System.out.println("**Coût total des matériaux avec TVA ("+project.getMainDœuvreList().getFirst().getTauxTVA()+"%) : "+lastpricewithtva);
+                        Double tauxtvaprice = (initprice * project.getMainDœuvreList().getFirst().getTauxTVA() ) / 100;
+                        System.out.println("**Coût total des matériaux avec TVA ("+project.getMainDœuvreList().getFirst().getTauxTVA()+"%) : "+(initprice+tauxtvaprice));
 
                     }
 
@@ -235,7 +235,7 @@ public class ProjectUI {
                     System.out.println("3. Coût total avant marge : "+totalwithoutmarge+" €");
                     Double marge = totalwithoutmarge * project.getMarge_benificiare();
                     Double Lastmarge =  marge / 100;
-                    System.out.println("4. Marge bénéficiaire (15%) : "+Lastmarge+" €");
+                    System.out.println("4. Marge bénéficiaire (15%) : "+(Lastmarge + totalwithoutmarge)+" €");
 
                     System.out.println("**Coût total final du projet : "+project.getCout_total()+" €**");
 
