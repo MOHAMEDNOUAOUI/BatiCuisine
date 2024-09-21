@@ -25,13 +25,14 @@ public class DevisRepository implements DevisRepositoryInterface {
 
     @Override
     public Devis save(Devis devis) throws SQLException {
-        String sql = "insert into devis (montantestime , dateemission , datevalidite , accepte , projet_id) values(?,?,?,?,?)";
+        String sql = "insert into devis (id_devis , montantestime , dateemission , datevalidite , accepte , projet_id) values(?,?,?,?,?,?)";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-            preparedStatement.setDouble(1,devis.getMontantEstime());
-            preparedStatement.setDate(2, Date.valueOf(devis.getDateEmission()));
-            preparedStatement.setDate(3, Date.valueOf(devis.getDateValidite()));
-            preparedStatement.setBoolean(4,devis.isAccepte());
-            preparedStatement.setObject(5,devis.getProjet().getId());
+            preparedStatement.setObject(1 , devis.getId_Devis());
+            preparedStatement.setDouble(2,devis.getMontantEstime());
+            preparedStatement.setDate(3, Date.valueOf(devis.getDateEmission()));
+            preparedStatement.setDate(4, Date.valueOf(devis.getDateValidite()));
+            preparedStatement.setBoolean(5,devis.isAccepte());
+            preparedStatement.setObject(6,devis.getProjet().getId());
             preparedStatement.executeUpdate();
 
         }

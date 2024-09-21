@@ -6,6 +6,7 @@ import Entity.Projets;
 import Service.Implementation.MateriauxService;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 public class MaterialUI {
@@ -40,6 +41,23 @@ public class MaterialUI {
 
 
         return material;
+    }
+
+
+    public static void displayMaterials(List<Materiaux> materials) {
+        System.out.println("=== Materials ===");
+        System.out.printf("%-20s %-15s %-10s %-15s %-20s%n",
+                "Nom", "Coût Unitaire", "Quantité", "Coût Transport", "Coefficient Qualité");
+        System.out.println("-".repeat(80));
+        for (Materiaux material : materials) {
+            System.out.printf("%-20s %-15.2f %-10.2f %-15.2f %-20.2f%n",
+                    material.getNom(),
+                    material.getCoutUnitaire(),
+                    material.getQuantite(),
+                    material.getCoutTransport(),
+                    material.getCoefficientQualite());
+        }
+        System.out.println();
     }
 
 }

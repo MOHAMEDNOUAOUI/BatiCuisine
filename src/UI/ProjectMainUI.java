@@ -3,7 +3,7 @@ package UI;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import static UI.ProjectUI.CreateProject;
+import static UI.ProjectUI.*;
 
 public class ProjectMainUI {
 
@@ -30,9 +30,11 @@ public class ProjectMainUI {
                     break;
 
                 case 2:
+                    ShowAllProject();
                     break;
 
                 case 3:
+                    calculateprojectcout();
                     break;
 
                 case 4:

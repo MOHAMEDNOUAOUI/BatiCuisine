@@ -141,4 +141,34 @@ public class MateriauxRepository implements MateriauxRepositoryInterface {
     }
 
 
+    @Override
+    public List<Materiaux> findByProjectId(UUID id) throws SQLException {
+        List<Materiaux> materiauxList = new ArrayList<>();
+        String sql = "Select * from matériaux where projet_id = ?";
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            preparedStatement.setObject(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+
+            while (resultSet.next()){
+                Materiaux materiaux = new Materiaux();
+                materiaux.setId(resultSet.getObject(1 , UUID.class));
+                materiaux.setNom(resultSet.getString(2));
+                materiaux.setTauxTVA(resultSet.getDouble(3));
+                materiaux.setTypeComposant(resultSet.getString(4));
+                materiaux.setCoutUnitaire(resultSet.getDouble(6));
+                materiaux.setQuantite(resultSet.getDouble(7));
+                materiaux.setCoutTransport(resultSet.getDouble(8));
+                materiaux.setCoefficientQualite(resultSet.getDouble(9));
+
+                materiauxList.add(materiaux);
+            }
+        }
+
+
+        return materiauxList;
+    }
+
+
 }

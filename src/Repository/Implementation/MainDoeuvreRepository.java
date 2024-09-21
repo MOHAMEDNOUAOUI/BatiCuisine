@@ -133,4 +133,36 @@ public class MainDoeuvreRepository implements MainDoeuvreRepositoryInterface {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public List<MainDœuvre> findByProjectId(UUID id) throws SQLException {
+        List<MainDœuvre> mainDœuvreList = new ArrayList<>();
+
+        String sql = "Select * from maindœuvre WHERE projet_id = ?";
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            preparedStatement.setObject(1 , id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+
+            while(resultSet.next()){
+                MainDœuvre mainDœuvre = new MainDœuvre();
+                mainDœuvre.setId(resultSet.getObject("id_composants" , UUID.class));
+                mainDœuvre.setNom(resultSet.getString("nom"));
+                mainDœuvre.setTauxTVA(resultSet.getDouble("tauxTVA"));
+                mainDœuvre.setTypeComposant(resultSet.getString("typeComposant"));
+                mainDœuvre.setTauxHoraire(resultSet.getDouble("tauxHoraire"));
+                mainDœuvre.setHeuresTravail(resultSet.getDouble("heurestravail"));
+                mainDœuvre.setProductiviteOuvrier(resultSet.getDouble("productiviteouvrier"));
+                //project
+
+                mainDœuvreList.add(mainDœuvre);
+            }
+
+
+        }
+
+
+        return mainDœuvreList;
+    }
 }

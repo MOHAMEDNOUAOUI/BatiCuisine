@@ -6,6 +6,7 @@ import Service.Implementation.MainDoeuvreService;
 import Service.Implementation.MateriauxService;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 public class MainDoeuvreUI {
@@ -40,6 +41,22 @@ public class MainDoeuvreUI {
         }
 
         return mainDœuvre;
+    }
+
+
+    static void displayLabor(List<MainDœuvre> laborList) {
+        System.out.println("=== Labor (Main d'œuvre) ===");
+        System.out.printf("%-20s %-15s %-15s %-20s%n",
+                "Nom", "Taux Horaire", "Heures Travail", "Productivité Ouvrier");
+        System.out.println("-".repeat(70));
+        for (MainDœuvre labor : laborList) {
+            System.out.printf("%-20s %-15.2f %-15.2f %-20.2f%n",
+                    labor.getNom(),
+                    labor.getTauxHoraire(),
+                    labor.getHeuresTravai(),
+                    labor.getProductiviteOuvrier());
+        }
+        System.out.println();
     }
 
 }

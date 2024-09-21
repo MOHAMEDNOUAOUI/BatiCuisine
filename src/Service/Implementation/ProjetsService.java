@@ -11,6 +11,8 @@ import com.sun.tools.javac.Main;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import Enum.*;
@@ -98,6 +100,41 @@ public class ProjetsService implements ProjetsServiceInterface {
         return MainProject;
     }
 
+
+
+    public List<Projets> FindALlProject() throws SQLException {
+        List<Projets> projetsList = projetsRepository.findAll();
+
+        projetsList.stream()
+                .forEach(e->{
+                    try {
+                        List<MainDœuvre> mainDœuvreList =  mainDoeuvreRepository.findByProjectId(e.getId());
+                        e.setMainDœuvreList(mainDœuvreList);
+                        List<Materiaux> materiauxList = materiauxRepository.findByProjectId(e.getId());
+                        e.setMateriauxList(materiauxList);
+
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                });
+
+
+        return projetsList;
+    }
+
+
+    public Optional<Projets> findprojet(UUID id) throws SQLException {
+
+        Optional<Projets> projets = projetsRepository.findById(id);
+
+        List<Materiaux> materiauxList = materiauxRepository.findByProjectId(projets.get().getId());
+        List<MainDœuvre> mainDœuvreList = mainDoeuvreRepository.findByProjectId(projets.get().getId());
+
+        projets.get().setMateriauxList(materiauxList);
+        projets.get().setMainDœuvreList(mainDœuvreList);
+
+        return projets;
+    }
 
 
 }

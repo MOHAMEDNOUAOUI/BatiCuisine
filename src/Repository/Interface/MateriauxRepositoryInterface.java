@@ -15,5 +15,5 @@ public interface MateriauxRepositoryInterface {
     Materiaux save(Materiaux materiaux);
     void deleteById(UUID id) throws SQLException;
     void update(Materiaux materiaux ,String column,String value);
-
+    List<Materiaux> findByProjectId(UUID id) throws SQLException;
 }
