@@ -7,7 +7,6 @@ import java.util.UUID;
 import Enum.*;
 
 public class Clients {
-
     private UUID id_Clients;
     private String nom;
     private String address;

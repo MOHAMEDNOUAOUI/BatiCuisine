@@ -7,6 +7,7 @@ import Service.Interface.ClientsServiceInterface;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -82,6 +83,17 @@ public class ClientsService implements ClientsServiceInterface {
         return client;
     }
 
+    @Override
+    public List<Clients> getAllClients() throws SQLException {
+        List<Clients> clientsList = clientsRepository.findAll();
+
+        if(!clientsList.isEmpty()){
+            return clientsList;
+        }
+
+
+        return List.of();
+    }
 
 
 }

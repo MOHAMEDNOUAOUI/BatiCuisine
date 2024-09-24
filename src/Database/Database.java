@@ -10,7 +10,7 @@ public class Database {
     private static Connection con = null;
 
 
-    public static void Database () {
+    public Database() {
         String URL = "jdbc:postgresql://localhost:5432/baticuisine";
         String USERNAME = "postgres";
         String PASSWORD = "root";
@@ -25,7 +25,7 @@ public class Database {
 
     public static  Connection getConnection() {
         if (con == null) {
-            Database();
+            new Database();
             return con;
         }else {
             return con;

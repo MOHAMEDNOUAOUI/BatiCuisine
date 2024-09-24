@@ -105,6 +105,7 @@ public class ClientsRepository implements ClientsRepositoryInterface {
                     client.setNom(resultSet.getString("nom"));
                     client.setAddress(resultSet.getString("adresse"));
                     client.setTelephone(resultSet.getString("telephone"));
+                    client.setStatut_user(ClientsStatut.valueOf(resultSet.getString("statut_client")));
                     client.setEstProfessionel(resultSet.getBoolean("estProfessionel"));
                     clientChecker.put(clientId, client);
                 }
